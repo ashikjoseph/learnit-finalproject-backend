@@ -26,6 +26,9 @@ learnitServer.use(express.json());
 // learnitServer.use(appMiddleware)
 learnitServer.use(router)
 
+// learnitserver should expose the path uploads
+learnitServer.use('/uploads',express.static('./uploads'))
+
 // 7) define port
 const PORT = 4000;
 

@@ -1,27 +1,31 @@
-const multer = require('multer')
+const multer = require('multer');
 
 
 const storage = multer.diskStorage({
-    destination:(req,file,callback)=>{
-        callback(null,'./uploads')
+    destination: (req, file, callback) => {
+        callback(null, './uploads');
     },
-    filename: (req,file,callback)=>{
-        const filename= `image-${Date.now()}-${file.originalname}`
-        callback(null, filename)
+    filename: (req, file, callback) => {
+        const filename = `${file.fieldname}-${Date.now()}-${file.originalname}`;
+        callback(null, filename);
     }
-})
+});
 
-const fileFilter = (req, file, callback)=>{
-    if(file.mimetype === 'image/png' || file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg'){
-        callback(null, true)
+
+const fileFilter = (req, file, callback) => {
+    if (file.fieldname === 'noteThumbnail' && (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png')) {
+        callback(null, true); 
+    } else if (file.fieldname === 'notePdf' && file.mimetype === 'application/pdf') {
+        callback(null, true); 
+    } else {
+        callback(new Error('Invalid file type.'));
     }
-    else{
-        callback(null, false)
-        return callback(new ErrorEvent("only png, jpeg, jpg files are allowed"))
-    }
-}
+};
+
+
 const multerConfig = multer({
-    storage,
-    fileFilter
-})
+    storage: storage,
+    fileFilter: fileFilter
+});
+
 module.exports = multerConfig;

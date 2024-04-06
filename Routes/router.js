@@ -19,13 +19,27 @@ router.post('/user/register', userController.register)
 router.post('/user/login',userController.login)
 
 // 3) add new note
-router.post('/note/add',jwtMiddleware,multerConfig.multiple('noteThumbnail', 'notePdf'),noteController.addNote)
+
+router.post('/note/add', jwtMiddleware, multerConfig.fields([
+    { name: 'noteThumbnail', maxCount: 1 },
+    { name: 'notePdf', maxCount: 1 }
+]), noteController.addNote);
+
+// 4)get note for home page
+router.get('/note/home-note',noteController.getHomeNote)
+
+// 5) get all projects
+router.get('/note/all-note',jwtMiddleware,noteController.getAllNote)
+
+// 6)get user projects
+router.get('/note/user-note',jwtMiddleware,noteController.getUserNote)
 
 
+// 7) edit user note
+router.put('/note/edit/:id',jwtMiddleware,multerConfig.single("noteThumbnail"),noteController.editUserNote)
 
-
-
-
+// 8)delete user note
+router.delete('/note/remove/:id',jwtMiddleware,noteController.deleteUserNote)
 
 
 
