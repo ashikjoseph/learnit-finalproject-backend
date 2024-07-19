@@ -13,10 +13,11 @@ const storage = multer.diskStorage({
 
 
 const fileFilter = (req, file, callback) => {
-    if (file.fieldname === 'noteThumbnail' && (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png')) {
-        callback(null, true); 
+    if ((file.fieldname === 'noteThumbnail' || file.fieldname === 'profileImage') &&
+        (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png')) {
+        callback(null, true);
     } else if (file.fieldname === 'notePdf' && file.mimetype === 'application/pdf') {
-        callback(null, true); 
+        callback(null, true);
     } else {
         callback(new Error('Invalid file type.'));
     }
