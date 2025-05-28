@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
-
-const ProfileSchema = new mongoose. Schema({
+const ProfileSchema = new mongoose.Schema({
   universityName: {
     type: String,
     required: true
@@ -22,12 +21,15 @@ const ProfileSchema = new mongoose. Schema({
     type: String,
     required: true
   },
+  paypalEmail: {                // <-- Added field here
+    type: String,
+    required: true
+  },
   userId: {
     type: String,
-    require: true
-}
-
+    required: true           // fixed typo here: changed 'require' to 'required'
+  }
 });
 
-const profiles = mongoose.model("profiles",ProfileSchema)
+const profiles = mongoose.model("profiles", ProfileSchema);
 module.exports = profiles;

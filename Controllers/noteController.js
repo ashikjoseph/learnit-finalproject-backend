@@ -8,7 +8,7 @@ exports.addNote = async (req, res) => {
     console.log(noteThumbnail)
     const notePdf = req.files['notePdf'][0].filename;
     console.log(notePdf)
-    const { noteTitle, courseName, subjectName, paypalEmail, noteDescription } = req.body;
+    const { noteTitle, courseName, subjectName, noteDescription } = req.body; // paypalEmail removed
     try {
         const existingNote = await notes.findOne({ notePdf: notePdf });
         if (existingNote) {
@@ -19,7 +19,6 @@ exports.addNote = async (req, res) => {
                 notePdf: notePdf,
                 courseName: courseName,
                 subjectName: subjectName,
-                paypalEmail: paypalEmail,
                 noteDescription: noteDescription,
                 noteThumbnail: noteThumbnail,
                 userId: userId
@@ -43,13 +42,11 @@ exports.getHomeNote = async (req, res) => {
 }
 
 exports.getAllNote = async (req, res) => {
-
     const searchKey = req.query.search
     console.log(searchKey)
 
     const query = {
         noteTitle: {
-
             $regex: searchKey, $options: 'i'
         }
     }
@@ -57,7 +54,6 @@ exports.getAllNote = async (req, res) => {
     try {
         const allNote = await notes.find(query);
         res.status(200).json(allNote)
-
     } catch (err) {
         res.status(401).json("Request failed due to ", err)
     }
@@ -78,17 +74,16 @@ exports.editUserNote = async (req, res) => {
     const userId = req.payload;
     console.log("note id", id)
     console.log("user id", userId)
-    const { noteTitle,courseName,subjectName,paypalEmail,noteDescription,noteThumbnail } = req.body;
+    const { noteTitle, courseName, subjectName, noteDescription, noteThumbnail } = req.body; // paypalEmail removed
     const uploadNoteThumbnail = req.file ? req.file.filename : noteThumbnail;
     try {
         const updateNote = await notes.findByIdAndUpdate(
             { _id: id }, {
-            noteTitle:noteTitle,
-            subjectName:subjectName,
-            courseName:courseName,
-            paypalEmail:paypalEmail,
-            noteDescription:noteDescription,
-            noteThumbnail:uploadNoteThumbnail,
+            noteTitle: noteTitle,
+            subjectName: subjectName,
+            courseName: courseName,
+            noteDescription: noteDescription,
+            noteThumbnail: uploadNoteThumbnail,
             userId: userId
         },
             { new: true }
@@ -107,6 +102,5 @@ exports.deleteUserNote = async (req, res) => {
         res.status(200).json("Note deleted successfully")
     } catch (err) {
         res.status(401).json("delete failed", err)
-    }
+    }                       
 }
-

@@ -4,19 +4,20 @@ exports.addProfile = async (req, res) => {
     try {
         const userId = req.payload;
         console.log(userId);
-        const { universityName, courseName, syllabus, collegeName} = req.body; 
+        const { universityName, courseName, syllabus, collegeName, paypalEmail } = req.body; 
         const profileImage = req.file ? req.file.filename : null;
 
         try {
-            const existingProfile = await profiles.findOne({ userId:userId });
+            const existingProfile = await profiles.findOne({ userId: userId });
             if (existingProfile) {
-                return res.status(406).json("profile already updated");
+                return res.status(406).json("Profile already updated");
             } else {
                 const newProfile = new profiles({
                     universityName,
                     courseName,
                     syllabus,
                     collegeName,
+                    paypalEmail,
                     profileImage,
                     userId
                 });
@@ -31,8 +32,6 @@ exports.addProfile = async (req, res) => {
     }
 };
 
-
-
 // get user profile
 
 exports.getUserProfile = async (req, res) => {
@@ -45,24 +44,24 @@ exports.getUserProfile = async (req, res) => {
     }
 }
 
-
 exports.editUserProfile = async (req, res) => {
     const { id } = req.params;
     const userId = req.payload;
-    console.log("note id", id)
+    console.log("profile id", id)
     console.log("user id", userId)
-    const { universityName,courseName,syllabus,collegeName,profileImage } = req.body;
+    const { universityName, courseName, syllabus, collegeName, paypalEmail, profileImage } = req.body;
     const uploadProfileImage = req.file ? req.file.filename : profileImage;
     try {
         const updateProfile = await profiles.findByIdAndUpdate(
             { _id: id }, {
-            universityName,
-            courseName,
-            syllabus,
-            collegeName,
-            profileImage:uploadProfileImage,
-            userId: userId
-        },
+                universityName,
+                courseName,
+                syllabus,
+                collegeName,
+                paypalEmail,
+                profileImage: uploadProfileImage,
+                userId: userId
+            },
             { new: true }
         )
         await updateProfile.save()
@@ -70,4 +69,4 @@ exports.editUserProfile = async (req, res) => {
     } catch (err) {
         res.status(401).json("Unable to update due to:", err)
     }
-} 
+}
