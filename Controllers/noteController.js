@@ -8,7 +8,7 @@ exports.addNote = async (req, res) => {
     console.log(noteThumbnail)
     const notePdf = req.files['notePdf'][0].filename;
     console.log(notePdf)
-    const { noteTitle, courseName, subjectName, noteDescription } = req.body; // paypalEmail removed
+    const { noteTitle, courseName, subjectName, noteDescription } = req.body; 
     try {
         const existingNote = await notes.findOne({ notePdf: notePdf });
         if (existingNote) {
@@ -74,7 +74,7 @@ exports.editUserNote = async (req, res) => {
     const userId = req.payload;
     console.log("note id", id)
     console.log("user id", userId)
-    const { noteTitle, courseName, subjectName, noteDescription, noteThumbnail } = req.body; // paypalEmail removed
+    const { noteTitle, courseName, subjectName, noteDescription, noteThumbnail } = req.body; 
     const uploadNoteThumbnail = req.file ? req.file.filename : noteThumbnail;
     try {
         const updateNote = await notes.findByIdAndUpdate(

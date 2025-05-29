@@ -21,13 +21,13 @@ const ProfileSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  paypalEmail: {                // <-- Added field here
+  paypalEmail: {                
     type: String,
     required: true
   },
   userId: {
     type: String,
-    required: true           // fixed typo here: changed 'require' to 'required'
+    required: true           
   }
 });
 
